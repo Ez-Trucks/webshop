@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const apiUrl = process.env.EZ_TRUCKS_API_URL || 'http://localhost:3000';
-const target = path.join(__dirname, '..', 'public', 'env.js');
+const apiUrl = process.env.EZ_TRUCKS_API_URL;
+const target = path.join(__dirname, '..', 'public', 'ez-config.js');
 
 fs.writeFileSync(
   target,
-  `window.__EZ_TRUCKS_API_URL__ = ${JSON.stringify(apiUrl)};\n`,
+  apiUrl ? `window.__EZ_TRUCKS_API_URL__ = ${JSON.stringify(apiUrl)};\n` : '',
 );

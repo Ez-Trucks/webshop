@@ -7,5 +7,9 @@ declare global {
 const configuredApiUrl =
   typeof window !== 'undefined' ? window.__EZ_TRUCKS_API_URL__ : undefined;
 
-export const API_BASE_URL = (configuredApiUrl || 'http://localhost:3000').replace(/\/$/, '');
+const defaultApiUrl =
+  typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? 'https://webshop-api-m7ko.onrender.com'
+    : 'http://localhost:3000';
 
+export const API_BASE_URL = (configuredApiUrl || defaultApiUrl).replace(/\/$/, '');
