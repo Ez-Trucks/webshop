@@ -102,6 +102,12 @@
   color: var(--ez-muted);
 }
 
+.photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .photo-button {
   position: relative;
   display: inline-flex;
@@ -117,6 +123,12 @@
   cursor: pointer;
 }
 
+.photo-button--secondary {
+  border: 1px solid rgba(17, 24, 47, 0.18);
+  background: #fff;
+  color: var(--ez-ink);
+}
+
 .photo-button input {
   position: absolute;
   inset: 0;
@@ -124,15 +136,21 @@
   cursor: pointer;
 }
 
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 12px;
+}
+
 .image-preview {
   display: grid;
-  gap: 12px;
-  align-items: start;
+  gap: 8px;
+  margin: 0;
 }
 
 .image-preview img {
-  width: min(100%, 360px);
-  max-height: 260px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: contain;
   border: 1px solid var(--ez-line);
   border-radius: var(--ez-radius);

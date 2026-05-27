@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PartsApi } from '../../services/parts-api';
-import { Part } from '../../models/part-model';
+import { Part, getPartImages, getPrimaryPartImage } from '../../models/part-model';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart';
 @Component({
@@ -14,6 +14,7 @@ import { CartService } from '../../services/cart';
 export class ProductDetail {
   part?:Part;
   loading=true;
+  selectedImage = '';
   
   constructor(
     private route:ActivatedRoute,
@@ -27,6 +28,7 @@ export class ProductDetail {
       this.partsApi.getOne(id).subscribe({
         next: (data) => {
           this.part = data;
+          this.selectedImage = getPrimaryPartImage(data);
           this.loading = false;
         },
         error: (err) => {
@@ -45,6 +47,14 @@ export class ProductDetail {
       this.cartService.addToCart(this.part,1)
       alert("Onderdeel toegevoegd aan het winkelmandje")
     }
+  }
+
+  getImages(): string[] {
+    return this.part ? getPartImages(this.part) : [];
+  }
+
+  selectImage(image: string): void {
+    this.selectedImage = image;
   }
 
 }

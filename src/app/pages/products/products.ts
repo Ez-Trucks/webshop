@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PartsApi } from '../../services/parts-api';
-import { Part } from '../../models/part-model';
+import { Part, getPrimaryPartImage } from '../../models/part-model';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart';
@@ -60,6 +60,11 @@ export class Products {
     this.cartService.addToCart(part,1)
     this.noticeMessage = `${part.name} werd toegevoegd aan je winkelmand.`;
   }
+
+  getPrimaryImage(part: Part): string {
+    return getPrimaryPartImage(part);
+  }
+
   loadParts() {
   this.loading = true;
   this.errorMessage = '';

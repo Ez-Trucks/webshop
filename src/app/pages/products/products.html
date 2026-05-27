@@ -82,7 +82,7 @@
       @for (part of filteredParts; track part.id) {
         <article class="product-card">
           <a class="product-card__image" [routerLink]="['/products', part.id]">
-            <img [src]="part.image || 'images/ez-logo-factuur-2026.png?v=2'" [alt]="part.name" />
+            <img [src]="getPrimaryImage(part)" [alt]="part.name" />
           </a>
 
           <div class="product-card__body">

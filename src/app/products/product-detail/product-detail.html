@@ -5,11 +5,27 @@
     <a class="back-link" routerLink="/products">Terug naar alle onderdelen</a>
 
     <div class="detail-layout">
-      <div class="detail-image">
-        <img
-          [src]="part.image || 'images/ez-logo-factuur-2026.png?v=2'"
-          alt="{{ part.name }}"
-        />
+      <div class="detail-gallery">
+        <div class="detail-image">
+          <img
+            [src]="selectedImage"
+            alt="{{ part.name }}"
+          />
+        </div>
+
+        @if (getImages().length > 1) {
+          <div class="detail-thumbs">
+            @for (image of getImages(); track $index) {
+              <button
+                type="button"
+                [class.is-active]="image === selectedImage"
+                (click)="selectImage(image)"
+              >
+                <img [src]="image" alt="Productfoto {{ $index + 1 }}" />
+              </button>
+            }
+          </div>
+        }
       </div>
 
       <article class="detail-card">

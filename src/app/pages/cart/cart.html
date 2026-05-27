@@ -16,7 +16,7 @@
         @for (item of items; track item.part.id) {
           <article class="cart-item">
             <div class="cart-item__image">
-              <img [src]="item.part.image || 'images/ez-logo-factuur-2026.png?v=2'" [alt]="item.part.name" />
+              <img [src]="getPrimaryImage(item.part)" [alt]="item.part.name" />
             </div>
 
             <div class="cart-item__body">

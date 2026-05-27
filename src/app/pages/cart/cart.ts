@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart';
 import { CartItem } from '../../models/cart-item-model';
+import { Part, getPrimaryPartImage } from '../../models/part-model';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -40,6 +41,10 @@ export class Cart {
   clearCart(){
     this.cartservice.clearCart();
     this.loadCart();
+  }
+
+  getPrimaryImage(part: Part): string {
+    return getPrimaryPartImage(part);
   }
 
 }

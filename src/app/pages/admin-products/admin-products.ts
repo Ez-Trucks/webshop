@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import { PartsApi } from '../../services/parts-api';
-import { Part } from '../../models/part-model';
+import { Part, getPartImages, getPrimaryPartImage } from '../../models/part-model';
 import { AdminAuth } from '../../services/admin-auth';
 
 @Component({
@@ -35,6 +35,7 @@ export class AdminProducts implements OnInit {
   errorMessage = '';
   successMessage = '';
   imageProcessing = false;
+  selectedImages: string[] = [];
 
   productForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -87,8 +88,9 @@ export class AdminProducts implements OnInit {
       category: part.category ?? '',
       condition: part.condition ?? 'used',
       price: Number(part.price ?? 0),
-      image: part.image ?? '',
+      image: '',
     });
+    this.selectedImages = getPartImages(part);
   }
 
   cancelEdit(): void {
@@ -105,19 +107,24 @@ export class AdminProducts implements OnInit {
       price: 0,
       image: '',
     });
+    this.selectedImages = [];
   }
 
-  onImageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+  getPrimaryImage(part: Part): string {
+    return getPrimaryPartImage(part, 'images/ez-trucks-transparent-no-website.png?v=5');
+  }
 
-    if (!file) {
+  onImagesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+
+    if (files.length === 0) {
       return;
     }
 
     this.errorMessage = '';
 
-    if (!file.type.startsWith('image/')) {
+    if (files.some((file) => !file.type.startsWith('image/'))) {
       this.errorMessage = 'Kies een geldig afbeeldingsbestand.';
       input.value = '';
       return;
@@ -125,35 +132,54 @@ export class AdminProducts implements OnInit {
 
     this.imageProcessing = true;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const image = new Image();
-      image.onload = () => {
-        this.productForm.controls.image.setValue(this.resizeImage(image));
-        this.imageProcessing = false;
+    Promise.all(files.map((file) => this.readAndResizeImage(file)))
+      .then((images) => {
+        this.selectedImages = [...this.selectedImages, ...images].slice(0, 8);
         input.value = '';
-      };
-      image.onerror = () => {
-        this.errorMessage = 'De foto kon niet verwerkt worden.';
-        this.imageProcessing = false;
+      })
+      .catch(() => {
+        this.errorMessage = 'Een of meerdere fotos konden niet verwerkt worden.';
         input.value = '';
+      })
+      .finally(() => {
+        this.imageProcessing = false;
+      });
+  }
+
+  removeImage(index: number): void {
+    this.selectedImages = this.selectedImages.filter((_, imageIndex) => imageIndex !== index);
+  }
+
+  clearImages(): void {
+    this.selectedImages = [];
+  }
+
+  private readAndResizeImage(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const image = new Image();
+        image.onload = () => {
+          resolve(this.resizeImage(image));
+        };
+        image.onerror = () => {
+          reject(new Error('Image processing failed'));
+        };
+        image.src = String(reader.result);
       };
-      image.src = String(reader.result);
-    };
-    reader.onerror = () => {
-      this.errorMessage = 'De foto kon niet gelezen worden.';
-      this.imageProcessing = false;
-      input.value = '';
-    };
-    reader.readAsDataURL(file);
+      reader.onerror = () => {
+        reject(new Error('File reading failed'));
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   clearImage(): void {
-    this.productForm.controls.image.setValue('');
+    this.clearImages();
   }
 
   private resizeImage(image: HTMLImageElement): string {
-    const maxSize = 1200;
+    const maxSize = 900;
     const scale = Math.min(maxSize / image.width, maxSize / image.height, 1);
     const canvas = document.createElement('canvas');
 
@@ -163,7 +189,7 @@ export class AdminProducts implements OnInit {
     const context = canvas.getContext('2d');
     context?.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-    return canvas.toDataURL('image/jpeg', 0.82);
+    return canvas.toDataURL('image/jpeg', 0.72);
   }
 
   submit(): void {
@@ -179,11 +205,15 @@ export class AdminProducts implements OnInit {
     this.saving = true;
 
     const formValue = this.productForm.getRawValue();
+    const payload = {
+      ...formValue,
+      image: this.selectedImages.length > 0 ? JSON.stringify(this.selectedImages) : '',
+    };
     const isEdit = !!this.editingPartId;
 
     const req$ = this.editingPartId
-      ? this.api.update(this.editingPartId, formValue)
-      : this.api.create(formValue);
+      ? this.api.update(this.editingPartId, payload)
+      : this.api.create(payload);
 
     req$
       .pipe(finalize(() => (this.saving = false)))

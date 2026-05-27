@@ -42,7 +42,7 @@
             @for (part of parts; track part.id) {
               <tr>
                 <td>
-                  <img class="part-thumb" [src]="part.image || 'images/ez-trucks-transparent-no-website.png?v=5'" [alt]="part.name" />
+                  <img class="part-thumb" [src]="getPrimaryImage(part)" [alt]="part.name" />
                 </td>
                 <td>{{ part.name }}</td>
                 <td>{{ part.partNumber }}</td>
@@ -133,27 +133,36 @@
       <section class="photo-panel">
         <div>
           <h3>Productfoto</h3>
-          <p>Neem rechtstreeks een foto met je gsm of kies een bestaande afbeelding.</p>
+          <p>Kies een foto uit je galerij of open rechtstreeks je camera.</p>
         </div>
 
-        <label class="photo-button">
-          Foto nemen of uploaden
-          <input type="file" accept="image/*" capture="environment" (change)="onImageSelected($event)" />
-        </label>
+        <div class="photo-actions">
+          <label class="photo-button">
+            Foto kiezen
+            <input type="file" accept="image/*" multiple (change)="onImagesSelected($event)" />
+          </label>
 
-        <label class="form-field">
-          Of gebruik een afbeeldings-URL
-          <input formControlName="image" placeholder="https://..." />
-        </label>
+          <label class="photo-button photo-button--secondary">
+            Camera openen
+            <input type="file" accept="image/*" multiple capture="environment" (change)="onImagesSelected($event)" />
+          </label>
+        </div>
 
         @if (imageProcessing) {
           <p>Foto verwerken...</p>
         }
 
-        @if (productForm.controls.image.value) {
-          <div class="image-preview">
-            <img [src]="productForm.controls.image.value" alt="Preview productfoto" />
-            <button class="ez-button-secondary" type="button" (click)="clearImage()">Foto verwijderen</button>
+        @if (selectedImages.length > 0) {
+          <div class="image-preview-grid">
+            @for (image of selectedImages; track $index) {
+              <figure class="image-preview">
+                <img [src]="image" alt="Preview productfoto" />
+                <button class="ez-button-secondary" type="button" (click)="removeImage($index)">
+                  Verwijder
+                </button>
+              </figure>
+            }
+            <button class="ez-button-secondary" type="button" (click)="clearImages()">Alle foto’s verwijderen</button>
           </div>
         }
       </section>
