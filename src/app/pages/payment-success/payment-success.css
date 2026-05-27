@@ -1,0 +1,47 @@
+.payment-page {
+  display: grid;
+  place-items: center;
+}
+
+.payment-card {
+  width: min(760px, 100%);
+  border: 1px solid var(--ez-line);
+  border-radius: var(--ez-radius);
+  padding: 32px;
+  background: #fff;
+  box-shadow: var(--ez-shadow);
+}
+
+.payment-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.payment-card dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--ez-line);
+  padding-bottom: 10px;
+}
+
+.payment-card dt {
+  color: var(--ez-muted);
+}
+
+.payment-card dd {
+  margin: 0;
+  color: var(--ez-ink);
+  font-weight: 900;
+  text-align: right;
+}
+
+.status-pending {
+  border: 1px solid #f1d086;
+  border-radius: var(--ez-radius);
+  padding: 12px 14px;
+  color: #8a5b00;
+  background: #fff8e8;
+}
+

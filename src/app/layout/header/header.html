@@ -1,0 +1,41 @@
+<header class="header">
+  <a class="brand" routerLink="/" aria-label="Eeckeleers en Zonen home">
+    <img src="images/ez-trucks-transparent-no-website.png?v=5" alt="Eeckeleers & Zonen Truckparts Services" />
+  </a>
+
+  <nav>
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Home
+    </a>
+
+    <a
+      routerLink="/products"
+      routerLinkActive="active"
+    >
+      Onderdelen
+    </a>
+
+    <a 
+      routerLink="/cart" 
+      routerLinkActive="active"
+    >
+      Winkelmand
+      @if (totalQuantity > 0) {
+        <span class="cart-count">{{ totalQuantity }}</span>
+      }
+
+    </a>
+    @if (isAdmin) {
+      <a routerLink="/admin" routerLinkActive="active">Beheer</a>
+    } @else if (!user) {
+      <a routerLink="/login" routerLinkActive="active">Inloggen</a>
+    } @else {
+      <button class="nav-button" type="button" (click)="logout()">Uitloggen</button>
+    }
+  </nav>
+</header>
+

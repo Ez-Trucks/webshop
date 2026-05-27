@@ -1,1 +1,202 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --ez-ink: #11182f;
+  --ez-navy: #182a52;
+  --ez-navy-2: #223b70;
+  --ez-blue: #0067b1;
+  --ez-blue-2: #1f7fd1;
+  --ez-silver: #b8bec8;
+  --ez-steel: #727b8c;
+  --ez-line: #d8dee8;
+  --ez-bg: #f4f6f9;
+  --ez-panel: #ffffff;
+  --ez-text: #182033;
+  --ez-muted: #677287;
+  --ez-danger: #a82929;
+  --ez-success: #167047;
+  --ez-shadow: 0 18px 42px rgba(17, 24, 47, 0.12);
+  --ez-radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--ez-bg);
+}
+
+body {
+  margin: 0;
+  color: var(--ez-text);
+  background: var(--ez-bg);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.main-content {
+  min-height: calc(100vh - 230px);
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 28px 0 48px;
+}
+
+.page-kicker {
+  margin: 0 0 8px;
+  color: var(--ez-blue);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.page-title {
+  margin: 0;
+  color: var(--ez-ink);
+  font-size: clamp(1.9rem, 9vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.page-lead {
+  max-width: 720px;
+  margin: 14px 0 0;
+  color: var(--ez-muted);
+  font-size: 1rem;
+}
+
+.ez-button,
+.ez-button-secondary,
+.ez-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0 18px;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.ez-button {
+  background: var(--ez-blue);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(0, 103, 177, 0.24);
+}
+
+.ez-button:hover {
+  background: #075a98;
+}
+
+.ez-button-secondary {
+  border-color: var(--ez-line);
+  background: #fff;
+  color: var(--ez-ink);
+}
+
+.ez-icon-button {
+  width: 42px;
+  min-width: 42px;
+  padding: 0;
+}
+
+.ez-alert {
+  border: 1px solid #efc2c2;
+  border-radius: var(--ez-radius);
+  padding: 12px 14px;
+  color: var(--ez-danger);
+  background: #fff3f3;
+}
+
+.ez-success {
+  border: 1px solid #bde7cf;
+  border-radius: var(--ez-radius);
+  padding: 12px 14px;
+  color: var(--ez-success);
+  background: #effaf4;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.form-field {
+  display: grid;
+  gap: 7px;
+  color: var(--ez-ink);
+  font-weight: 800;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea,
+.filter-panel input,
+.filter-panel select {
+  width: 100%;
+  border: 1px solid var(--ez-line);
+  border-radius: 6px;
+  padding: 11px 12px;
+  color: var(--ez-text);
+  background: #fff;
+}
+
+.form-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.field-error {
+  color: var(--ez-danger);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  border: 1px dashed var(--ez-line);
+  border-radius: var(--ez-radius);
+  padding: 32px;
+  background: #fff;
+  text-align: center;
+}
+
+@media (min-width: 720px) {
+  .page-shell {
+    width: min(1180px, calc(100% - 32px));
+    padding: 42px 0 64px;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+

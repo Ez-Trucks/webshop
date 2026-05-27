@@ -1,0 +1,119 @@
+<section class="page-shell products-page">
+  <div class="products-hero">
+    <div>
+      <p class="page-kicker">Webshop</p>
+      <h1 class="page-title">DAF onderdelen</h1>
+      <p class="page-lead">
+        Zoek gericht op model, categorie, prijs of onderdeelnummer. Elk onderdeel is
+        duidelijk opgebouwd voor snelle vergelijking en bestelling.
+      </p>
+    </div>
+    <img src="images/ez-logo-factuur-2026.png?v=2" alt="Eeckeleers & Zonen" />
+  </div>
+
+  <div class="filter-panel">
+    <label>
+      Model
+      <select [(ngModel)]="selectedModel" (change)="filterParts()">
+        <option value="">Alle modellen</option>
+        @for (m of models; track $index) {
+          <option [value]="m">{{ m }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Categorie
+      <select [(ngModel)]="selectedCategory" (change)="filterParts()">
+        <option value="">Alle categorieen</option>
+        @for (c of categories; track $index) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Min. prijs
+      <input type="number" [(ngModel)]="minPrice" (input)="filterParts()" placeholder="vanaf" />
+    </label>
+
+    <label>
+      Max. prijs
+      <input type="number" [(ngModel)]="maxPrice" (input)="filterParts()" placeholder="tot" />
+    </label>
+
+    <label>
+      Sorteer op prijs
+      <select [(ngModel)]="sortByPrice" (change)="applySorting()">
+        <option value="">Standaard</option>
+        <option value="asc">Laag naar hoog</option>
+        <option value="desc">Hoog naar laag</option>
+      </select>
+    </label>
+
+    <label class="filter-panel__search">
+      Zoek
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="filterParts()"
+        placeholder="Naam of onderdeelnummer"
+      />
+    </label>
+  </div>
+
+  @if (noticeMessage) {
+    <div class="ez-success">{{ noticeMessage }}</div>
+  }
+
+  @if (errorMessage) {
+    <div class="ez-alert">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="empty-state">Onderdelen laden...</div>
+  } @else if (filteredParts.length === 0) {
+    <div class="empty-state">
+      <h2>Geen onderdelen gevonden</h2>
+      <p>Pas je filters aan of zoek op een ander onderdeelnummer.</p>
+    </div>
+  } @else {
+    <div class="product-grid">
+      @for (part of filteredParts; track part.id) {
+        <article class="product-card">
+          <a class="product-card__image" [routerLink]="['/products', part.id]">
+            <img [src]="part.image || 'images/ez-logo-factuur-2026.png?v=2'" [alt]="part.name" />
+          </a>
+
+          <div class="product-card__body">
+            <div class="product-card__tags">
+              <span>{{ part.model }}</span>
+              <span>{{ part.condition }}</span>
+            </div>
+
+            <h2>
+              <a [routerLink]="['/products', part.id]">{{ part.name }}</a>
+            </h2>
+
+            <dl>
+              <div>
+                <dt>Onderdeelnummer</dt>
+                <dd>{{ part.partNumber }}</dd>
+              </div>
+              <div>
+                <dt>Categorie</dt>
+                <dd>{{ part.category }}</dd>
+              </div>
+            </dl>
+
+            <div class="product-card__footer">
+              <strong>&euro;{{ part.price }}</strong>
+              <button class="ez-button" type="button" (click)="addToCart(part)">Toevoegen</button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
+

@@ -1,0 +1,117 @@
+<section class="page-shell checkout-page">
+  <div>
+    <p class="page-kicker">Checkout</p>
+    <h1 class="page-title">Afrekenen</h1>
+    <p class="page-lead">Vul je gegevens in. Daarna word je veilig doorgestuurd naar Mollie.</p>
+  </div>
+
+  @if (items.length === 0) {
+    <div class="empty-state">
+      <h2>Je winkelmand is leeg.</h2>
+      <p>Voeg eerst onderdelen toe voordat je afrekent.</p>
+      <a class="ez-button" routerLink="/products">Ga terug naar de shop</a>
+    </div>
+  } @else {
+    <div class="checkout-layout">
+      <form class="checkout-form" [formGroup]="checkoutForm" (ngSubmit)="submitOrder()">
+        <section>
+          <h2>Klantgegevens</h2>
+          <div class="form-grid">
+            <label class="form-field">
+              Naam*
+              <input formControlName="name" />
+              @if (submitted && checkoutForm.controls['name'].invalid) {
+                <span class="field-error">Naam is verplicht.</span>
+              }
+            </label>
+
+            <label class="form-field">
+              E-mail*
+              <input formControlName="email" type="email" />
+              @if (submitted && checkoutForm.controls['email'].invalid) {
+                <span class="field-error">Geldig e-mailadres is verplicht.</span>
+              }
+            </label>
+
+            <label class="form-field">
+              Telefoon
+              <input formControlName="phone" />
+            </label>
+
+            <label class="form-field">
+              Bedrijf
+              <input formControlName="company" />
+            </label>
+
+            <label class="form-field">
+              BTW-nummer
+              <input formControlName="vatNumber" />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2>Leveradres</h2>
+          <div class="form-grid">
+            <label class="form-field full">
+              Straat + nr*
+              <input formControlName="street" />
+              @if (submitted && checkoutForm.controls['street'].invalid) {
+                <span class="field-error">Straat is verplicht.</span>
+              }
+            </label>
+
+            <label class="form-field">
+              Postcode*
+              <input formControlName="postalCode" />
+              @if (submitted && checkoutForm.controls['postalCode'].invalid) {
+                <span class="field-error">Postcode is verplicht.</span>
+              }
+            </label>
+
+            <label class="form-field">
+              Stad*
+              <input formControlName="city" />
+              @if (submitted && checkoutForm.controls['city'].invalid) {
+                <span class="field-error">Stad is verplicht.</span>
+              }
+            </label>
+
+            <label class="form-field">
+              Land*
+              <input formControlName="country" />
+              @if (submitted && checkoutForm.controls['country'].invalid) {
+                <span class="field-error">Land is verplicht.</span>
+              }
+            </label>
+
+            <label class="form-field full">
+              Opmerkingen
+              <textarea formControlName="notes"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <button class="ez-button" type="submit">Bestelling plaatsen en betalen</button>
+      </form>
+
+      <aside class="order-summary">
+        <h2>Je bestelling</h2>
+        <div class="summary-lines">
+          @for (item of items; track item.part.id) {
+            <div>
+              <span>{{ item.part.name }} x{{ item.quantity }}</span>
+              <strong>&euro;{{ item.part.price * item.quantity }}</strong>
+            </div>
+          }
+        </div>
+        <div class="summary-total">
+          <span>Totaal</span>
+          <strong>&euro;{{ totalPrice }}</strong>
+        </div>
+        <p>Na bevestiging opent de beveiligde betaalpagina van Mollie.</p>
+      </aside>
+    </div>
+  }
+</section>
+

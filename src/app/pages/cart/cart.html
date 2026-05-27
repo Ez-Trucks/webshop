@@ -1,0 +1,55 @@
+<section class="page-shell cart-page">
+  <div>
+    <p class="page-kicker">Winkelmand</p>
+    <h1 class="page-title">Je geselecteerde onderdelen</h1>
+  </div>
+
+  @if (items.length === 0) {
+    <div class="empty-state">
+      <h2>Je winkelmand is leeg.</h2>
+      <p>Bekijk de onderdelen en voeg toe wat je nodig hebt.</p>
+      <a class="ez-button" routerLink="/products">Onderdelen bekijken</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <div class="cart-list">
+        @for (item of items; track item.part.id) {
+          <article class="cart-item">
+            <div class="cart-item__image">
+              <img [src]="item.part.image || 'images/ez-logo-factuur-2026.png?v=2'" [alt]="item.part.name" />
+            </div>
+
+            <div class="cart-item__body">
+              <h2>{{ item.part.name }}</h2>
+              <p>Onderdeelnummer: {{ item.part.partNumber }}</p>
+              <strong>&euro;{{ item.part.price }}</strong>
+            </div>
+
+            <div class="quantity-control">
+              <button class="ez-icon-button ez-button-secondary" type="button" (click)="decrease(item)">-</button>
+              <span>{{ item.quantity }}</span>
+              <button class="ez-icon-button ez-button-secondary" type="button" (click)="increase(item)">+</button>
+            </div>
+
+            <div class="cart-item__total">
+              <span>Subtotaal</span>
+              <strong>&euro;{{ item.part.price * item.quantity }}</strong>
+              <button type="button" (click)="removeItem(item.part.id)">Verwijder</button>
+            </div>
+          </article>
+        }
+      </div>
+
+      <aside class="cart-summary">
+        <h2>Overzicht</h2>
+        <div>
+          <span>Totaal</span>
+          <strong>&euro;{{ totalPrice }}</strong>
+        </div>
+        <a class="ez-button" routerLink="/checkout">Ga naar afrekenen</a>
+        <button class="ez-button-secondary" type="button" (click)="clearCart()">Winkelmand leegmaken</button>
+      </aside>
+    </div>
+  }
+</section>
+

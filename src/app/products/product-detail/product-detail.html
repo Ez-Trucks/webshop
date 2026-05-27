@@ -1,0 +1,55 @@
+<section class="page-shell detail-page">
+  @if (loading) {
+    <div class="empty-state">Onderdeel laden...</div>
+  } @else if (part) {
+    <a class="back-link" routerLink="/products">Terug naar alle onderdelen</a>
+
+    <div class="detail-layout">
+      <div class="detail-image">
+        <img
+          [src]="part.image || 'images/ez-logo-factuur-2026.png?v=2'"
+          alt="{{ part.name }}"
+        />
+      </div>
+
+      <article class="detail-card">
+        <p class="page-kicker">{{ part.model }} / {{ part.category }}</p>
+        <h1 class="page-title">{{ part.name }}</h1>
+        <p class="page-lead">Professioneel truckonderdeel, klaar om toe te voegen aan je bestelling.</p>
+
+        <dl class="spec-list">
+          <div>
+            <dt>Onderdeelnummer</dt>
+            <dd>{{ part.partNumber }}</dd>
+          </div>
+          <div>
+            <dt>Model</dt>
+            <dd>{{ part.model }}</dd>
+          </div>
+          <div>
+            <dt>Categorie</dt>
+            <dd>{{ part.category }}</dd>
+          </div>
+          <div>
+            <dt>Staat</dt>
+            <dd>{{ part.condition }}</dd>
+          </div>
+        </dl>
+
+        <div class="buy-panel">
+          <div>
+            <span>Prijs</span>
+            <strong>&euro;{{ part.price }}</strong>
+          </div>
+          <button class="ez-button" type="button" (click)="addToCart()">Voeg toe aan winkelmand</button>
+        </div>
+      </article>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <h1>Dit onderdeel bestaat niet.</h1>
+      <a class="ez-button" routerLink="/products">Terug naar onderdelen</a>
+    </div>
+  }
+</section>
+

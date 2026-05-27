@@ -1,0 +1,160 @@
+.admin-shell {
+  width: min(1180px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 28px 0 56px;
+  display: grid;
+  gap: 20px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-header h1,
+.admin-panel h2 {
+  margin: 0;
+  color: var(--ez-ink);
+}
+
+.admin-panel {
+  border: 1px solid var(--ez-line);
+  border-radius: var(--ez-radius);
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(17, 24, 47, 0.08);
+}
+
+.admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid var(--ez-line);
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  color: var(--ez-muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.part-thumb {
+  width: 64px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #f2f5f9;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.danger-button {
+  min-height: 36px;
+  border: 1px solid #efc2c2;
+  border-radius: 6px;
+  padding: 0 12px;
+  color: var(--ez-danger);
+  background: #fff3f3;
+  font-weight: 800;
+}
+
+.admin-form {
+  display: grid;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.photo-panel {
+  display: grid;
+  gap: 14px;
+  border: 1px solid var(--ez-line);
+  border-radius: var(--ez-radius);
+  padding: 16px;
+  background: #f8fafc;
+}
+
+.photo-panel h3 {
+  margin: 0 0 4px;
+  color: var(--ez-ink);
+}
+
+.photo-panel p {
+  margin: 0;
+  color: var(--ez-muted);
+}
+
+.photo-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  width: fit-content;
+  border-radius: 6px;
+  padding: 0 18px;
+  background: var(--ez-blue);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.photo-button input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-preview {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+
+.image-preview img {
+  width: min(100%, 360px);
+  max-height: 260px;
+  object-fit: contain;
+  border: 1px solid var(--ez-line);
+  border-radius: var(--ez-radius);
+  background: #fff;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .admin-header,
+  .admin-actions,
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .photo-button,
+  .form-actions .ez-button,
+  .form-actions .ez-button-secondary {
+    width: 100%;
+  }
+}

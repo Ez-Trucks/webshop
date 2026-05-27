@@ -1,0 +1,55 @@
+<section class="page-shell payment-page">
+  <div class="payment-card">
+    <p class="page-kicker">Betaling</p>
+    <h1 class="page-title">Betaling afgerond</h1>
+
+    @if (loading) {
+      <p>Bestelling laden...</p>
+    }
+
+    @if (errorMessage) {
+      <div class="ez-alert">{{ errorMessage }}</div>
+    }
+
+    @if (order) {
+      <p>Bedankt voor je bestelling, {{ order.customerName }}.</p>
+
+      @if (order.status === 'paid') {
+        <div class="ez-success">Je betaling werd succesvol ontvangen.</div>
+      } @else if (order.status === 'pending') {
+        <div class="status-pending">Je betaling wordt nog gecontroleerd...</div>
+      } @else {
+        <p><strong>Bestelstatus:</strong> {{ order.status }}</p>
+      }
+
+      @if (infoMessage) {
+        <p>{{ infoMessage }}</p>
+      }
+
+      <dl>
+        <div>
+          <dt>Order ID</dt>
+          <dd>{{ order.id }}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{{ order.status }}</dd>
+        </div>
+        <div>
+          <dt>Totaal</dt>
+          <dd>&euro;{{ order.totalPrice }}</dd>
+        </div>
+      </dl>
+
+      <h2>Bestelde items</h2>
+      <ul>
+        @for (item of order.items; track item.id ?? $index) {
+          <li>{{ item.name }} - x{{ item.quantity }} - &euro;{{ item.price }}</li>
+        }
+      </ul>
+
+      <a class="ez-button" routerLink="/">Terug naar home</a>
+    }
+  </div>
+</section>
+

@@ -1,0 +1,172 @@
+<section class="admin-shell">
+  <header class="admin-header">
+    <div>
+      <p class="page-kicker">Beheer</p>
+      <h1>Onderdelen beheer</h1>
+    </div>
+    <button class="ez-button-secondary" type="button" (click)="logout()">Uitloggen</button>
+  </header>
+
+  @if (errorMessage) {
+    <div class="ez-alert">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="ez-success">{{ successMessage }}</div>
+  }
+
+  <section class="admin-panel">
+    <h2>Bestaande onderdelen</h2>
+
+    @if (loading) {
+      <p>Onderdelen laden...</p>
+    } @else if (parts.length === 0) {
+      <p>Er zijn nog geen onderdelen.</p>
+    } @else {
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Naam</th>
+              <th>Onderdeelnummer</th>
+              <th>Model</th>
+              <th>Categorie</th>
+              <th>Staat</th>
+              <th>Prijs</th>
+              <th>Acties</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (part of parts; track part.id) {
+              <tr>
+                <td>
+                  <img class="part-thumb" [src]="part.image || 'images/ez-trucks-transparent-no-website.png?v=5'" [alt]="part.name" />
+                </td>
+                <td>{{ part.name }}</td>
+                <td>{{ part.partNumber }}</td>
+                <td>{{ part.model }}</td>
+                <td>{{ part.category }}</td>
+                <td>{{ part.condition }}</td>
+                <td>&euro;{{ part.price }}</td>
+                <td class="admin-actions">
+                  <button class="ez-button-secondary" type="button" (click)="startEdit(part)">Bewerk</button>
+                  <button class="danger-button" type="button" (click)="delete(part.id)">Verwijder</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  <section class="admin-panel">
+    @if (!editingPartId) {
+      <h2>Nieuw onderdeel toevoegen</h2>
+    } @else {
+      <h2>Onderdeel bewerken</h2>
+    }
+
+    <form class="admin-form" [formGroup]="productForm" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <label class="form-field">
+          Naam*
+          <input formControlName="name" />
+          @if (submitted && productForm.controls['name'].invalid) {
+            <span class="field-error">Naam is verplicht.</span>
+          }
+        </label>
+
+        <label class="form-field">
+          Onderdeelnummer*
+          <input formControlName="partNumber" />
+          @if (submitted && productForm.controls['partNumber'].invalid) {
+            <span class="field-error">Onderdeelnummer is verplicht.</span>
+          }
+        </label>
+
+        <label class="form-field">
+          Model*
+          <select formControlName="model">
+            <option value="">Kies model</option>
+            @for (m of models; track $index) {
+              <option [value]="m">{{ m }}</option>
+            }
+          </select>
+          @if (submitted && productForm.controls['model'].invalid) {
+            <span class="field-error">Model is verplicht.</span>
+          }
+        </label>
+
+        <label class="form-field">
+          Categorie*
+          <select formControlName="category">
+            <option value="">Kies categorie</option>
+            @for (c of categories; track $index) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+          @if (submitted && productForm.controls['category'].invalid) {
+            <span class="field-error">Categorie is verplicht.</span>
+          }
+        </label>
+
+        <label class="form-field">
+          Staat*
+          <select formControlName="condition">
+            <option value="used">Gebruikt</option>
+            <option value="new">Nieuw</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          Prijs*
+          <input type="number" formControlName="price" />
+          @if (submitted && productForm.controls['price'].invalid) {
+            <span class="field-error">Geldige prijs is verplicht.</span>
+          }
+        </label>
+      </div>
+
+      <section class="photo-panel">
+        <div>
+          <h3>Productfoto</h3>
+          <p>Neem rechtstreeks een foto met je gsm of kies een bestaande afbeelding.</p>
+        </div>
+
+        <label class="photo-button">
+          Foto nemen of uploaden
+          <input type="file" accept="image/*" capture="environment" (change)="onImageSelected($event)" />
+        </label>
+
+        <label class="form-field">
+          Of gebruik een afbeeldings-URL
+          <input formControlName="image" placeholder="https://..." />
+        </label>
+
+        @if (imageProcessing) {
+          <p>Foto verwerken...</p>
+        }
+
+        @if (productForm.controls.image.value) {
+          <div class="image-preview">
+            <img [src]="productForm.controls.image.value" alt="Preview productfoto" />
+            <button class="ez-button-secondary" type="button" (click)="clearImage()">Foto verwijderen</button>
+          </div>
+        }
+      </section>
+
+      <div class="form-actions">
+        <button class="ez-button" type="submit" [disabled]="saving || imageProcessing">
+          {{ saving ? 'Bezig met opslaan...' : (editingPartId ? 'Wijzigingen opslaan' : 'Opslaan') }}
+        </button>
+
+        @if (editingPartId) {
+          <button class="ez-button-secondary" type="button" (click)="cancelEdit()">Annuleren</button>
+        }
+      </div>
+    </form>
+  </section>
+</section>

@@ -1,0 +1,6 @@
+.main-content {
+  background:
+    linear-gradient(180deg, rgba(24, 42, 82, 0.04), rgba(255, 255, 255, 0) 260px),
+    var(--ez-bg);
+}
+

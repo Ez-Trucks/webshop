@@ -1,0 +1,18 @@
+.payment-page {
+  display: grid;
+  place-items: center;
+}
+
+.payment-card {
+  width: min(680px, 100%);
+  border: 1px solid var(--ez-line);
+  border-radius: var(--ez-radius);
+  padding: 32px;
+  background: #fff;
+  box-shadow: var(--ez-shadow);
+}
+
+.payment-card p {
+  color: var(--ez-muted);
+}
+
