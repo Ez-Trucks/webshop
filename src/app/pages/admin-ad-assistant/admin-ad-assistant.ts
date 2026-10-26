@@ -123,17 +123,19 @@ export class AdminAdAssistant implements OnInit {
   async photosSelected(event: Event) {
     const input = event.target as HTMLInputElement; const files = Array.from(input.files ?? []); input.value = '';
     await this.run(async () => {
-      if (files.length + this.draft.photos.length > 8) throw new Error('Je kunt maximaal 8 voertuigfoto’s toevoegen.');
+      if (files.length + this.draft.photos.length > 30) throw new Error('Je kunt maximaal 30 voertuigfoto’s toevoegen.');
       if (files.some(f => !['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 15 * 1024 * 1024))
         throw new Error('Gebruik JPG, PNG of WebP van maximaal 15 MB per foto.');
-      const photos = await Promise.all(files.map(async f => {
+      const photos: string[] = [];
+      for (const f of files) {
         const image = await createImageBitmap(f);
         const scale = Math.min(1200 / image.width, 1200 / image.height, 1); const canvas = document.createElement('canvas');
         canvas.width = Math.max(1, Math.round(image.width * scale)); canvas.height = Math.max(1, Math.round(image.height * scale));
         const context = canvas.getContext('2d'); if (!context) throw new Error('Foto kon niet verwerkt worden.');
         context.drawImage(image, 0, 0, canvas.width, canvas.height); image.close();
-        return canvas.toDataURL('image/jpeg', 0.8);
-      }));
+        photos.push(canvas.toDataURL('image/jpeg', 0.8));
+      }
+      this.checkFileBudget([...this.draft.photos, ...photos], this.draft.documents);
       this.draft.photos.push(...photos); this.mark(true);
     });
   }
@@ -149,8 +151,16 @@ export class AdminAdAssistant implements OnInit {
         const data = await new Promise<string>((resolve, reject) => { const r = new FileReader(); r.onload = () => resolve(String(r.result)); r.onerror = () => reject(new Error('Bestand kon niet gelezen worden.')); r.readAsDataURL(new Blob([file], { type: mime })); });
         docs.push({ name: file.name.slice(0, 150), mime, data });
       }
+      this.checkFileBudget(this.draft.photos, [...this.draft.documents, ...docs]);
       this.draft.documents.push(...docs); this.mark(true);
     });
+  }
+  private checkFileBudget(photos: string[], documents: Attachment[]) {
+    const bytes = [...photos, ...documents.map(d => d.data)].reduce((sum, data) => {
+      const base64 = data.slice(data.indexOf(',') + 1);
+      return sum + base64.length * 3 / 4 - (base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0);
+    }, 0);
+    if (bytes > 20 * 1024 * 1024) throw new Error('Alle bestanden samen mogen maximaal 20 MB zijn. Verklein foto’s of verwijder een bronbestand.');
   }
   removePhoto(index: number) { this.draft.photos.splice(index, 1); this.mark(true); }
   movePhoto(index: number, offset: number) {

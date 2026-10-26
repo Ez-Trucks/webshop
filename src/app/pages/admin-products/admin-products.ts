@@ -172,11 +172,17 @@ export class AdminProducts implements OnInit {
       return;
     }
 
+    if (files.length + this.selectedImages.length > 30) {
+      this.errorMessage = 'Je kunt maximaal 30 foto’s toevoegen.';
+      input.value = '';
+      return;
+    }
+
     this.imageProcessing = true;
 
     Promise.all(files.map((file) => this.readAndResizeImage(file)))
       .then((images) => {
-        this.selectedImages = [...this.selectedImages, ...images].slice(0, 8);
+        this.selectedImages = [...this.selectedImages, ...images];
         input.value = '';
       })
       .catch(() => {
