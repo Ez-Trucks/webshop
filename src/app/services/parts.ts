@@ -14,7 +14,9 @@ export class PartsService {
     category: 'cabine',
     condition: 'used',
     price: 250,
-    image: 'https://www.trucksnl.be/img/9675d862fdec8b30ee98c59f6c753c8a/phare_piece_detachee_camion_daf_xf_cf_koplamp_links_1939777_euro_6_8295287.jpg?'
+    image: 'https://www.trucksnl.be/img/9675d862fdec8b30ee98c59f6c753c8a/phare_piece_detachee_camion_daf_xf_cf_koplamp_links_1939777_euro_6_8295287.jpg?',
+    stock: 1,
+    warehouseLocation: 'Demo',
   },
   {
     id: '2',
@@ -24,7 +26,9 @@ export class PartsService {
     category: 'cabine',
     condition: 'used',
     price: 180,
-    image: 'https://www.trucksnl.be/img/f0d3f4d772245aa926eeefe310a4276d/spiegel_vrachtwagen_onderdeel_daf_1952141_buitenspiegel_cpl_li_cf_8233659.jpg?width=512&height=436&quality=70'
+    image: 'https://www.trucksnl.be/img/f0d3f4d772245aa926eeefe310a4276d/spiegel_vrachtwagen_onderdeel_daf_1952141_buitenspiegel_cpl_li_cf_8233659.jpg?width=512&height=436&quality=70',
+    stock: 1,
+    warehouseLocation: 'Demo',
   },
   {
     id: '3',
@@ -34,7 +38,9 @@ export class PartsService {
     category: 'remmen',
     condition: 'new',
     price: 320,
-    image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQol00e5TcQoN9SjTcUJJp5jyROLgAQkLi8KxRCtf_z1oFQaTTUtUnR7TJ1DPUJdTMNrT6NufsvERtO5tJUm8VSpHk1jjNofOP_48aeb--l_mewuJdUWLLr'
+    image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQol00e5TcQoN9SjTcUJJp5jyROLgAQkLi8KxRCtf_z1oFQaTTUtUnR7TJ1DPUJdTMNrT6NufsvERtO5tJUm8VSpHk1jjNofOP_48aeb--l_mewuJdUWLLr',
+    stock: 1,
+    warehouseLocation: 'Demo',
   }
 ];
 

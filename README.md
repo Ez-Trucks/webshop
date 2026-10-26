@@ -1,59 +1,45 @@
-# Dafwebshop
+# EZ-Trucks website
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+The existing Angular 20 website for Eeckeleers & Zonen, including stock pages, an admin panel, depannage requests and the AI Advertisement Assistant. The backend is maintained in `Ez-Trucks/webshop-api`.
 
-## Development server
+## Development
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Use Node.js 22.
 
 ```bash
-ng generate component component-name
+npm ci
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Development defaults to `http://localhost:3000`. Set `EZ_TRUCKS_API_URL` at build time to use another API. This is a public URL, never an API key or password. See `.env.example`; `.env` files are not automatically loaded by the build script, so provide this variable through the shell or Vercel environment settings.
+
+## Release checks and production build
 
 ```bash
-ng generate --help
+node scripts/test-api-boundary.cjs
+npm run build
 ```
 
-## Building
+GitHub Actions runs both checks on the release branch and pull request. The token-boundary check executes the actual interceptor code and verifies that the admin session is sent only to the configured API origin and path.
 
-To build the project run:
+## Existing Vercel deployment
 
-```bash
-ng build
-```
+- Build command: `npm run build`
+- Output directory: `dist/dafwebshop/browser`
+- Set `EZ_TRUCKS_API_URL` to the actual Render API origin in the appropriate Vercel environment.
+- `vercel.json` provides SPA routing, disables indexing of admin/login routes and prevents caching the runtime API configuration.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Deploy the backend and its additive database migrations first. Then deploy this frontend. Keep the existing domain configuration. In the admin dashboard, **Status van de website** checks whether the API, vehicle fields, draft storage and server settings are available. Presence of a mail/AI key is not proof of successful delivery or account access.
 
-## Running unit tests
+## Admin features
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- `/admin`: dashboard and server readiness checks.
+- `/admin/products`: existing vehicle management, photos, stock and technical fields.
+- `/admin/orders`: stored depannage enquiries.
+- `/admin/ad-assistant`: private drafts with VIN, notes, documents and photos; source review; per-field confirmations; editable NL/EN/FR/DE descriptions; approval before website publication; text export for Autoline.
 
-```bash
-ng test
-```
+If AI is not configured on the server, the assistant clearly disables AI actions while keeping manual editing and standard text generation available. Standard descriptions translate field labels only; review or translate entered free-text values yourself.
 
-## Running end-to-end tests
+Known source/fact changes invalidate old generated descriptions. Route changes and page refresh warn about unsaved edits. Published vehicles are edited through the existing vehicle manager. The public site currently uses the Dutch description, and direct Autoline publishing requires a separate official account integration.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Before launch, verify the business email/contact details and test one authorised real enquiry and a test advertisement. The stock and admin pages are functional without the previously disabled cart/checkout routes. No demo user, demo transport interception or fake AI response is shipped in this production source. The separate private ChatGPT preview uses browser-local demo data only.

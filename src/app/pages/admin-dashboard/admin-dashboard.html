@@ -2,20 +2,35 @@
   <div>
     <p class="page-kicker">Beheer</p>
     <h1>Adminpaneel</h1>
-    <p>Beheer hier de webshop: onderdelen, productfoto's, bestellingen en verzendingen.</p>
+    <p>Beheer hier de website: vrachtwagens, foto&apos;s, beschikbaarheid en aanvragen.</p>
   </div>
 
   <div class="dashboard-grid">
+    <a routerLink="/admin/ad-assistant">
+      <span>AI &amp; advertenties</span>
+      <strong>AI Advertentieassistent</strong>
+      <p>VIN, documenten en foto’s analyseren, gegevens controleren en advertenties in vier talen maken.</p>
+    </a>
     <a routerLink="/admin/products">
       <span>Items</span>
-      <strong>Onderdelen beheren</strong>
-      <p>Producten toevoegen, aanpassen, verwijderen en foto's nemen.</p>
+      <strong>Vrachtwagens beheren</strong>
+      <p>Camions toevoegen, aanpassen, verwijderen en foto&apos;s nemen.</p>
     </a>
 
     <a routerLink="/admin/orders">
-      <span>Bestellingen</span>
-      <strong>Orders verwerken</strong>
-      <p>Betaalde bestellingen bekijken en status op verzonden zetten.</p>
+      <span>Aanvragen</span>
+      <strong>Depannage opvolgen</strong>
+      <p>Bekijk formulieraanvragen met locatie, voertuiginfo en contactgegevens.</p>
     </a>
+  </div>
+</section>
+<section class="readiness" aria-labelledby="readiness-title">
+  <div class="status-heading"><div><h2 id="readiness-title">Status van de website</h2><p>Controleer of de server en instellingen klaarstaan voor gebruik.</p></div><button type="button" (click)="check()" [disabled]="checking">{{ checking ? 'Controleren…' : 'Opnieuw controleren' }}</button></div>
+  <div aria-live="polite">@if (statusError) { <p class="status-error">{{ statusError }}</p> }
+    @if (readiness) {
+      <p class="status-summary">{{ readiness.ready ? 'De verplichte technische controles zijn geslaagd.' : 'Er zijn nog instellingen of database-updates nodig.' }}</p>
+      <ul>@for (item of readiness.checks; track item.key) { <li><span [class.ok]="item.ok" [class.pending]="!item.ok">{{ item.ok ? '✓' : '!' }}</span><span>{{ item.label }}<small>{{ item.required ? 'Nodig voor ingebruikname' : 'Optioneel — handmatig werken blijft mogelijk' }}</small></span><strong>{{ item.ok ? 'In orde' : 'Nog instellen' }}</strong></li> }</ul>
+      <p>Controleer vóór ingebruikname ook je contactgegevens, een echte formulieraanvraag en een testadvertentie. Autoline gebruikt voorlopig tekstexport.</p>
+    }
   </div>
 </section>

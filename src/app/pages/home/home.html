@@ -3,79 +3,186 @@
   <div class="hero__shade"></div>
 
   <div class="hero__content">
-    <p class="page-kicker">Truckparts & services</p>
-    <h1>DAF onderdelen met de service van een echte truckpartner.</h1>
-    <p>
-      Bestel betrouwbare truckonderdelen met snelle opvolging, duidelijke communicatie
-      en de professionele aanpak van Eeckeleers & Zonen.
-    </p>
+    <p class="page-kicker">{{ languageService.t('heroKicker') }}</p>
+    <h1>{{ languageService.t('heroTitle') }}</h1>
+    <p>{{ languageService.t('heroText') }}</p>
 
     <div class="hero__actions">
-      <a routerLink="/products" class="ez-button">Bekijk onderdelen</a>
-      <a routerLink="/cart" class="ez-button-secondary">Winkelmand</a>
+      <a routerLink="/products" class="ez-button">{{ languageService.t('heroStock') }}</a>
+      <a href="#depannage" class="ez-button-secondary">{{ languageService.t('heroAssistance') }}</a>
     </div>
   </div>
 </section>
 
 <section class="trust-strip">
   <div>
-    <strong>DAF focus</strong>
-    <span>Onderdelen voor professionele toepassingen</span>
+    <strong>{{ languageService.t('trustSalesTitle') }}</strong>
+    <span>{{ languageService.t('trustSalesText') }}</span>
   </div>
   <div>
-    <strong>Snelle opvolging</strong>
-    <span>Bestelling en betaling helder opgevolgd</span>
+    <strong>{{ languageService.t('trustBuyTitle') }}</strong>
+    <span>{{ languageService.t('trustBuyText') }}</span>
   </div>
   <div>
-    <strong>Veilig betalen</strong>
-    <span>Checkout via Mollie</span>
+    <strong>{{ languageService.t('trustAssistanceTitle') }}</strong>
+    <span>{{ languageService.t('trustAssistanceText') }}</span>
   </div>
   <div>
-    <strong>Belgische service</strong>
-    <span>Truckparts & services van dichtbij</span>
+    <strong>{{ languageService.t('trustServiceTitle') }}</strong>
+    <span>{{ languageService.t('trustServiceText') }}</span>
   </div>
 </section>
 
 <section class="page-shell intro-grid">
   <div>
-    <p class="page-kicker">Waarom EZ-Trucks</p>
-    <h2>Een webshop die voelt als jullie werkplaats: strak, direct en betrouwbaar.</h2>
+    <p class="page-kicker">{{ languageService.t('introKicker') }}</p>
+    <h2>{{ languageService.t('introTitle') }}</h2>
   </div>
 
   <div class="intro-grid__text">
     <p>
-      De huisstijl combineert donker navy, staalgrijs en helder blauw. Dat geeft de
-      webshop dezelfde krachtige uitstraling als jullie truck: technisch, verzorgd en
-      professioneel.
+      {{ languageService.t('introText') }}
     </p>
   </div>
 </section>
 
 <section class="page-shell feature-grid">
+  <article><span>01</span><h3>{{ languageService.t('featureStockTitle') }}</h3><p>{{ languageService.t('featureStockText') }}</p></article>
+  <article><span>02</span><h3>{{ languageService.t('featureBuyTitle') }}</h3><p>{{ languageService.t('featureBuyText') }}</p></article>
+  <article><span>03</span><h3>{{ languageService.t('featureAssistanceTitle') }}</h3><p>{{ languageService.t('featureAssistanceText') }}</p></article>
+</section>
+<section class="page-shell feature-grid">
+  <article><span>{{ languageService.t('stepOne') }}</span><h3>{{ languageService.t('stepOneTitle') }}</h3><p>{{ languageService.t('stepOneText') }}</p></article>
+  <article><span>{{ languageService.t('stepTwo') }}</span><h3>{{ languageService.t('stepTwoTitle') }}</h3><p>{{ languageService.t('stepTwoText') }}</p></article>
+  <article><span>{{ languageService.t('stepThree') }}</span><h3>{{ languageService.t('stepThreeTitle') }}</h3><p>{{ languageService.t('stepThreeText') }}</p></article>
+</section>
+
+<section class="service-band" id="aankoop">
+  <div>
+    <p class="page-kicker">{{ languageService.t('buyKicker') }}</p>
+    <h2>{{ languageService.t('buyTitle') }}</h2>
+    <p>{{ languageService.t('buyText') }}</p>
+  </div>
+  <a class="ez-button" href="mailto:info@ez-trucks.be?subject=Vrachtwagen%20verkopen">
+    {{ languageService.t('buyButton') }}
+  </a>
+</section>
+
+<section class="service-band service-band--dark" id="depannage">
+  <div>
+    <p class="page-kicker">{{ languageService.t('depannageKicker') }}</p>
+    <h2>{{ languageService.t('depannageTitle') }}</h2>
+    <p>{{ languageService.t('depannageText') }}</p>
+  </div>
+  <a class="ez-button" href="#depannage-form">{{ languageService.t('depannageButton') }}</a>
+</section>
+
+<section class="page-shell depannage-form-section" id="depannage-form">
+  <div class="depannage-form-intro">
+    <p class="page-kicker">{{ languageService.t('formKicker') }}</p>
+    <h2>{{ languageService.t('formTitle') }}</h2>
+    <p>{{ languageService.t('formText') }}</p>
+  </div>
+
+  <form class="depannage-form" [formGroup]="depannageForm" (ngSubmit)="submitDepannage()">
+    @if (depannageSuccess) {
+      <div class="ez-success">{{ depannageSuccess }}</div>
+    }
+
+    @if (depannageError) {
+      <div class="ez-alert">{{ depannageError }}</div>
+    }
+
+    <div class="form-grid">
+      <label class="form-field">
+        {{ languageService.t('name') }}*
+        <input formControlName="name" />
+        @if (depannageSubmitted && depannageForm.controls.name.invalid) {
+          <span class="field-error">Naam is verplicht.</span>
+        }
+      </label>
+
+      <label class="form-field">
+        {{ languageService.t('company') }}
+        <input formControlName="company" />
+      </label>
+
+      <label class="form-field">
+        {{ languageService.t('email') }}*
+        <input type="email" formControlName="email" />
+        @if (depannageSubmitted && depannageForm.controls.email.invalid) {
+          <span class="field-error">Geldig e-mailadres is verplicht.</span>
+        }
+      </label>
+
+      <label class="form-field">
+        {{ languageService.t('phone') }}*
+        <input formControlName="phone" />
+        @if (depannageSubmitted && depannageForm.controls.phone.invalid) {
+          <span class="field-error">Telefoonnummer is verplicht.</span>
+        }
+      </label>
+
+      <label class="form-field full">
+        {{ languageService.t('location') }}*
+        <input formControlName="location" placeholder="Bijv. gemeente, straat, parking of bedrijfsterrein" />
+        @if (depannageSubmitted && depannageForm.controls.location.invalid) {
+          <span class="field-error">Locatie is verplicht.</span>
+        }
+      </label>
+
+      <label class="form-field">
+        {{ languageService.t('vehicle') }}*
+        <input formControlName="vehicleInfo" placeholder="Bijv. DAF XF trekker, bouwjaar, nummerplaat" />
+        @if (depannageSubmitted && depannageForm.controls.vehicleInfo.invalid) {
+          <span class="field-error">Vrachtwageninfo is verplicht.</span>
+        }
+      </label>
+
+      <label class="form-field">
+        {{ languageService.t('urgency') }}*
+        <select formControlName="urgency">
+          <option value="Vandaag">{{ languageService.t('urgencyToday') }}</option>
+          <option value="Deze week">{{ languageService.t('urgencyWeek') }}</option>
+          <option value="Niet dringend">{{ languageService.t('urgencyNotUrgent') }}</option>
+        </select>
+      </label>
+
+      <label class="form-field full">
+        {{ languageService.t('problem') }}
+        <textarea formControlName="message" placeholder="Beschrijf kort het probleem, foutmelding of situatie."></textarea>
+      </label>
+    </div>
+
+    <button class="ez-button" type="submit" [disabled]="depannageSending">
+      {{ depannageSending ? languageService.t('sending') : languageService.t('sendRequest') }}
+    </button>
+  </form>
+</section>
+
+<section class="page-shell contact-grid">
   <article>
-    <span>01</span>
-    <h3>Kwaliteitsonderdelen</h3>
-    <p>Producten worden duidelijk getoond met model, categorie, staat en prijs.</p>
+    <p class="page-kicker">{{ languageService.t('contactKicker') }}</p>
+    <h2>{{ languageService.t('contactTitle') }}</h2>
+    <p>{{ languageService.t('contactText') }}</p>
   </article>
   <article>
-    <span>02</span>
-    <h3>Eenvoudig bestellen</h3>
-    <p>Van onderdeel naar winkelmand en checkout zonder onnodige afleiding.</p>
+    <strong>Verkoop of aankoop</strong>
+    <a href="mailto:info@ez-trucks.be?subject=Vrachtwagen%20verkopen">info@ez-trucks.be</a>
   </article>
   <article>
-    <span>03</span>
-    <h3>Professioneel beheer</h3>
-    <p>Admin blijft functioneel en beveiligd, zodat livegang later sterker staat.</p>
+    <strong>Depannage</strong>
+    <a href="mailto:info@ez-trucks.be?subject=Depannage%20vrachtwagen">Depannageaanvraag mailen</a>
   </article>
 </section>
 
 <section class="shop-cta">
   <div class="shop-cta__inner">
     <div>
-      <p class="page-kicker">Onderdelen zoeken</p>
-      <h2>Klaar om het juiste DAF onderdeel te vinden?</h2>
+      <p class="page-kicker">Voorraad bekijken</p>
+      <h2>Klaar om de beschikbare vrachtwagens te bekijken?</h2>
     </div>
-    <a routerLink="/products" class="ez-button">Naar de webshop</a>
+    <a routerLink="/products" class="ez-button">Naar de voorraad</a>
   </div>
 </section>
 

@@ -23,8 +23,20 @@ export class AdminProducts implements OnInit {
 
   parts: Part[] = [];
 
-  models: string[] = ['XF', 'CF', 'LF', 'XG', 'XG+'];
-  categories: string[] = ['Motor', 'Versnellingsbak', 'Remmen', 'Cabine', 'Elektrisch', 'Overig'];
+  models: string[] = ['DAF', 'Volvo', 'Scania', 'Mercedes-Benz', 'MAN', 'Iveco', 'Renault'];
+  categories: string[] = [
+    'Trekker',
+    'Bakwagen',
+    'Kipper',
+    'Containerwagen',
+    'Koelwagen',
+    'Chassis cabine',
+    'Oplegger',
+  ];
+  euroNorms: string[] = ['Euro 6', 'Euro 5', 'Euro 4', 'Euro 3', 'Onbekend'];
+  axleConfigs: string[] = ['4x2', '6x2', '6x4', '8x2', '8x4', '4x4', '6x6'];
+  fuelTypes: string[] = ['Diesel', 'Elektrisch', 'Hybride', 'CNG', 'LNG'];
+  transmissions: string[] = ['Automaat', 'Manueel', 'Halfautomaat'];
 
   submitted = false;
   editingPartId: string | null = null;
@@ -46,7 +58,17 @@ export class AdminProducts implements OnInit {
       validators: [Validators.required],
     }),
     price: [0, [Validators.required, Validators.min(0)]],
+    stock: [1, [Validators.required, Validators.min(0)]],
+    warehouseLocation: [''],
     image: [''],
+    year: [new Date().getFullYear(), [Validators.min(1900)]],
+    mileage: [0, [Validators.min(0)]],
+    euroNorm: [''],
+    axleConfig: [''],
+    powerHp: [0, [Validators.min(0)]],
+    fuel: ['Diesel'],
+    transmission: ['Automaat'],
+    description: [''],
   });
 
   ngOnInit(): void {
@@ -70,7 +92,7 @@ export class AdminProducts implements OnInit {
             this.logout();
             return;
           }
-          this.errorMessage = 'Laden van onderdelen is mislukt.';
+          this.errorMessage = 'Laden van vrachtwagens is mislukt.';
         },
       });
   }
@@ -88,7 +110,17 @@ export class AdminProducts implements OnInit {
       category: part.category ?? '',
       condition: part.condition ?? 'used',
       price: Number(part.price ?? 0),
+      stock: Number(part.stock ?? 0),
+      warehouseLocation: part.warehouseLocation ?? '',
       image: '',
+      year: Number(part.year ?? new Date().getFullYear()),
+      mileage: Number(part.mileage ?? 0),
+      euroNorm: part.euroNorm ?? '',
+      axleConfig: part.axleConfig ?? '',
+      powerHp: Number(part.powerHp ?? 0),
+      fuel: part.fuel ?? 'Diesel',
+      transmission: part.transmission ?? 'Automaat',
+      description: part.description ?? '',
     });
     this.selectedImages = getPartImages(part);
   }
@@ -105,7 +137,17 @@ export class AdminProducts implements OnInit {
       category: '',
       condition: 'used',
       price: 0,
+      stock: 1,
+      warehouseLocation: '',
       image: '',
+      year: new Date().getFullYear(),
+      mileage: 0,
+      euroNorm: '',
+      axleConfig: '',
+      powerHp: 0,
+      fuel: 'Diesel',
+      transmission: 'Automaat',
+      description: '',
     });
     this.selectedImages = [];
   }
@@ -207,6 +249,9 @@ export class AdminProducts implements OnInit {
     const formValue = this.productForm.getRawValue();
     const payload = {
       ...formValue,
+      year: formValue.year || undefined,
+      mileage: formValue.mileage || undefined,
+      powerHp: formValue.powerHp || undefined,
       image: this.selectedImages.length > 0 ? JSON.stringify(this.selectedImages) : '',
     };
     const isEdit = !!this.editingPartId;
@@ -221,15 +266,15 @@ export class AdminProducts implements OnInit {
         next: () => {
           this.cancelEdit();
           this.successMessage = isEdit
-            ? 'Onderdeel succesvol aangepast.'
-            : 'Onderdeel succesvol toegevoegd.';
+            ? 'Vrachtwagen succesvol aangepast.'
+            : 'Vrachtwagen succesvol toegevoegd.';
           this.loadParts();
         },
         error: (err) => {
           console.error('Save failed', err);
           this.errorMessage = isEdit
             ? 'Opslaan van wijzigingen is mislukt.'
-            : 'Toevoegen van onderdeel is mislukt.';
+            : 'Toevoegen van vrachtwagen is mislukt.';
         },
       });
   }
@@ -240,12 +285,12 @@ export class AdminProducts implements OnInit {
 
     this.api.delete(id).subscribe({
       next: () => {
-        this.successMessage = 'Onderdeel succesvol verwijderd.';
+        this.successMessage = 'Vrachtwagen succesvol verwijderd.';
         this.loadParts();
       },
       error: (err) => {
         console.error('Delete failed', err);
-        this.errorMessage = 'Verwijderen van onderdeel is mislukt.';
+        this.errorMessage = 'Verwijderen van vrachtwagen is mislukt.';
       },
     });
   }

@@ -1,41 +1,37 @@
 <header class="header">
   <a class="brand" routerLink="/" aria-label="Eeckeleers en Zonen home">
-    <img src="images/ez-trucks-transparent-no-website.png?v=5" alt="Eeckeleers & Zonen Truckparts Services" />
+    <img src="images/ez-trucks-transparent-no-website.png?v=5" alt="Eeckeleers & Zonen EZ-Trucks" />
   </a>
 
   <nav>
-    <a
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Home
+    <a routerLink="/" [class.active]="activePath === '/' && !activeFragment">
+      {{ languageService.t('navHome') }}
     </a>
 
-    <a
-      routerLink="/products"
-      routerLinkActive="active"
-    >
-      Onderdelen
+    <a routerLink="/products" routerLinkActive="active">{{ languageService.t('navStock') }}</a>
+
+    <a routerLink="/" fragment="aankoop" [class.active]="activeFragment === 'aankoop'">
+      {{ languageService.t('navBuy') }}
     </a>
-
-    <a 
-      routerLink="/cart" 
-      routerLinkActive="active"
-    >
-      Winkelmand
-      @if (totalQuantity > 0) {
-        <span class="cart-count">{{ totalQuantity }}</span>
-      }
-
+    <a routerLink="/" fragment="depannage" [class.active]="activeFragment === 'depannage'">
+      {{ languageService.t('navAssistance') }}
     </a>
     @if (isAdmin) {
-      <a routerLink="/admin" routerLinkActive="active">Beheer</a>
+      <a routerLink="/admin" routerLinkActive="active">{{ languageService.t('navAdmin') }}</a>
     } @else if (!user) {
-      <a routerLink="/login" routerLinkActive="active">Inloggen</a>
+      <a routerLink="/login" routerLinkActive="active">{{ languageService.t('navLogin') }}</a>
     } @else {
       <button class="nav-button" type="button" (click)="logout()">Uitloggen</button>
     }
+
+    <div class="language-switcher" aria-label="Taal kiezen">
+      <span>{{ languageService.t('language') }}</span>
+      <select [value]="languageService.language()" (change)="changeLanguage($event)" aria-label="Taal kiezen">
+        <option value="nl">NL</option>
+        <option value="fr">FR</option>
+        <option value="en">EN</option>
+      </select>
+    </div>
   </nav>
 </header>
 

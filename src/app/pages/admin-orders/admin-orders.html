@@ -1,89 +1,65 @@
-<h2>Admin - Bestellingen</h2>
+<section class="admin-shell">
+  <header class="admin-header">
+    <div>
+      <p class="page-kicker">Beheer</p>
+      <h1>Depannageaanvragen</h1>
+      <p>Bekijk aanvragen die via het formulier op de website binnenkomen.</p>
+    </div>
+    <button class="ez-button-secondary" type="button" (click)="logout()">Uitloggen</button>
+  </header>
 
-<p>
-  <button type="button" (click)="logout()">Uitloggen</button>
-</p>
+  @if (errorMessage) {
+    <div class="ez-alert">{{ errorMessage }}</div>
+  }
 
-@if (errorMessage) {
-  <div style="color: red; margin-bottom: 15px;">
-    {{ errorMessage }}
-  </div>
-}
+  @if (loading) {
+    <div class="empty-state">Aanvragen laden...</div>
+  } @else if (inquiries.length === 0) {
+    <div class="empty-state">
+      <h2>Nog geen depannageaanvragen</h2>
+      <p>Nieuwe aanvragen verschijnen hier zodra iemand het formulier invult.</p>
+    </div>
+  } @else {
+    <div class="inquiry-grid">
+      @for (inquiry of inquiries; track inquiry.id) {
+        <article class="inquiry-card">
+          <div class="inquiry-card__top">
+            <div>
+              <span>{{ inquiry.urgency }}</span>
+              <h2>{{ inquiry.name }}</h2>
+            </div>
+            <time>{{ inquiry.createdAt | date:'short' }}</time>
+          </div>
 
-@if (successMessage) {
-  <div style="color: green; margin-bottom: 15px;">
-    {{ successMessage }}
-  </div>
-}
+          <dl>
+            <div>
+              <dt>Bedrijf</dt>
+              <dd>{{ inquiry.company || '-' }}</dd>
+            </div>
+            <div>
+              <dt>Telefoon</dt>
+              <dd><a [href]="'tel:' + inquiry.phone">{{ inquiry.phone }}</a></dd>
+            </div>
+            <div>
+              <dt>E-mail</dt>
+              <dd><a [href]="'mailto:' + inquiry.email">{{ inquiry.email }}</a></dd>
+            </div>
+            <div>
+              <dt>Locatie</dt>
+              <dd>{{ inquiry.location }}</dd>
+            </div>
+            <div>
+              <dt>Vrachtwagen</dt>
+              <dd>{{ inquiry.vehicleInfo }}</dd>
+            </div>
+          </dl>
 
-@if (loading) {
-  <p>Bestellingen laden...</p>
-} @else if (orders.length === 0) {
-  <p>Er zijn nog geen bestellingen.</p>
-} @else {
-  <table border="1" cellpadding="5">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Klant</th>
-        <th>Adres</th>
-        <th>Items</th>
-        <th>Totaal</th>
-        <th>Status</th>
-        <th>Datum</th>
-        <th>Actie</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      @for (o of orders; track o.id) {
-        <tr>
-          <td>{{ o.id }}</td>
-
-          <td>
-            {{ o.customerName }}<br />
-            {{ o.email }}<br />
-            {{ o.phone }}
-          </td>
-
-          <td>
-            {{ o.address }}<br />
-            {{ o.postalCode }} {{ o.city }}<br />
-            {{ o.country }}
-          </td>
-
-          <td>
-            <ul>
-              @for (item of o.items; track item.id ?? $index) {
-                <li>
-                  {{ item.name }} - €{{ item.price }} (x{{ item.quantity }})
-                </li>
-              }
-            </ul>
-          </td>
-
-          <td>€{{ o.totalPrice }}</td>
-
-          <td>
-            <strong>{{ o.status }}</strong>
-          </td>
-
-          <td>{{ o.createdAt | date:'short' }}</td>
-
-          <td>
-            <select #statusSelect [ngModel]="o.status">
-              @for (status of statuses; track status) {
-                <option [value]="status">{{ status }}</option>
-              }
-            </select>
-
-            <button type="button" (click)="updateStatus(o, statusSelect.value)">
-              Opslaan
-            </button>
-          </td>
-        </tr>
+          @if (inquiry.message) {
+            <p>{{ inquiry.message }}</p>
+          }
+        </article>
       }
-    </tbody>
-  </table>
-}
+    </div>
+  }
+</section>
 

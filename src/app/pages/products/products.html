@@ -1,63 +1,70 @@
 <section class="page-shell products-page">
   <div class="products-hero">
     <div>
-      <p class="page-kicker">Webshop</p>
-      <h1 class="page-title">DAF onderdelen</h1>
-      <p class="page-lead">
-        Zoek gericht op model, categorie, prijs of onderdeelnummer. Elk onderdeel is
-        duidelijk opgebouwd voor snelle vergelijking en bestelling.
-      </p>
+      <p class="page-kicker">{{ languageService.t('stockKicker') }}</p>
+      <h1 class="page-title">{{ languageService.t('stockTitle') }}</h1>
+      <p class="page-lead">{{ languageService.t('stockLead') }}</p>
     </div>
     <img src="images/ez-logo-factuur-2026.png?v=2" alt="Eeckeleers & Zonen" />
   </div>
 
   <div class="filter-panel">
     <label>
-      Model
-      <select [(ngModel)]="selectedModel" (change)="filterParts()">
-        <option value="">Alle modellen</option>
-        @for (m of models; track $index) {
+      {{ languageService.t('brand') }}
+      <select [(ngModel)]="selectedBrand" (change)="filterParts()">
+        <option value="">{{ languageService.t('allBrands') }}</option>
+        @for (m of brands; track $index) {
           <option [value]="m">{{ m }}</option>
         }
       </select>
     </label>
 
     <label>
-      Categorie
-      <select [(ngModel)]="selectedCategory" (change)="filterParts()">
-        <option value="">Alle categorieen</option>
-        @for (c of categories; track $index) {
+      {{ languageService.t('type') }}
+      <select [(ngModel)]="selectedType" (change)="filterParts()">
+        <option value="">{{ languageService.t('allTypes') }}</option>
+        @for (c of types; track $index) {
           <option [value]="c">{{ c }}</option>
         }
       </select>
     </label>
 
     <label>
-      Min. prijs
+      {{ languageService.t('yearFrom') }}
+      <input type="number" [(ngModel)]="minYear" (input)="filterParts()" placeholder="bijv. 2018" />
+    </label>
+
+    <label>
+      {{ languageService.t('maxMileage') }}
+      <input type="number" [(ngModel)]="maxMileage" (input)="filterParts()" placeholder="bijv. 500000" />
+    </label>
+
+    <label>
+      {{ languageService.t('minPrice') }}
       <input type="number" [(ngModel)]="minPrice" (input)="filterParts()" placeholder="vanaf" />
     </label>
 
     <label>
-      Max. prijs
+      {{ languageService.t('maxPrice') }}
       <input type="number" [(ngModel)]="maxPrice" (input)="filterParts()" placeholder="tot" />
     </label>
 
     <label>
-      Sorteer op prijs
+      {{ languageService.t('sortPrice') }}
       <select [(ngModel)]="sortByPrice" (change)="applySorting()">
-        <option value="">Standaard</option>
-        <option value="asc">Laag naar hoog</option>
-        <option value="desc">Hoog naar laag</option>
+        <option value="">{{ languageService.t('defaultSort') }}</option>
+        <option value="asc">{{ languageService.t('priceLowHigh') }}</option>
+        <option value="desc">{{ languageService.t('priceHighLow') }}</option>
       </select>
     </label>
 
     <label class="filter-panel__search">
-      Zoek
+      {{ languageService.t('search') }}
       <input
         type="text"
         [(ngModel)]="searchTerm"
         (input)="filterParts()"
-        placeholder="Naam of onderdeelnummer"
+        placeholder="Zoek op model, referentie of beschrijving"
       />
     </label>
   </div>
@@ -71,11 +78,14 @@
   }
 
   @if (loading) {
-    <div class="empty-state">Onderdelen laden...</div>
+    <div class="empty-state">{{ languageService.t('loadingTrucks') }}</div>
   } @else if (filteredParts.length === 0) {
     <div class="empty-state">
-      <h2>Geen onderdelen gevonden</h2>
-      <p>Pas je filters aan of zoek op een ander onderdeelnummer.</p>
+      <h2>{{ languageService.t('noTrucks') }}</h2>
+      <p>{{ languageService.t('noTrucksText') }}</p>
+      <a class="ez-button" href="mailto:info@ez-trucks.be?subject=Ik%20zoek%20een%20vrachtwagen">
+        {{ languageService.t('tellUsSearch') }}
+      </a>
     </div>
   } @else {
     <div class="product-grid">
@@ -89,6 +99,7 @@
             <div class="product-card__tags">
               <span>{{ part.model }}</span>
               <span>{{ part.condition }}</span>
+              <span>{{ part.stock > 0 ? languageService.t('available') : languageService.t('sold') }}</span>
             </div>
 
             <h2>
@@ -97,18 +108,28 @@
 
             <dl>
               <div>
-                <dt>Onderdeelnummer</dt>
+                <dt>{{ languageService.t('reference') }}</dt>
                 <dd>{{ part.partNumber }}</dd>
               </div>
               <div>
-                <dt>Categorie</dt>
+                <dt>{{ languageService.t('type') }}</dt>
                 <dd>{{ part.category }}</dd>
+              </div>
+              <div>
+                <dt>{{ languageService.t('year') }}</dt>
+                <dd>{{ part.year || 'Op aanvraag' }}</dd>
+              </div>
+              <div>
+                <dt>{{ languageService.t('mileage') }}</dt>
+                <dd>{{ formatMileage(part) }}</dd>
               </div>
             </dl>
 
             <div class="product-card__footer">
               <strong>&euro;{{ part.price }}</strong>
-              <button class="ez-button" type="button" (click)="addToCart(part)">Toevoegen</button>
+              <a class="ez-button" [routerLink]="['/products', part.id]">
+                {{ languageService.t('viewDetails') }}
+              </a>
             </div>
           </div>
         </article>

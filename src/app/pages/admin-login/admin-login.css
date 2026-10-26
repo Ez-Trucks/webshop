@@ -28,28 +28,9 @@ h1 {
   font-size: 1.8rem;
 }
 
-.mode-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 18px;
-  border-radius: 8px;
-  padding: 6px;
-  background: #eef2f7;
-}
-
-.mode-tabs button {
-  border: 0;
-  border-radius: 6px;
-  padding: 10px;
-  color: var(--ez-ink);
-  background: transparent;
-  font-weight: 900;
-}
-
-.mode-tabs button.active {
-  background: #fff;
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+.login-intro {
+  margin: -8px 0 20px;
+  color: var(--ez-muted);
 }
 
 form {

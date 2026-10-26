@@ -1,0 +1,22 @@
+name: Website release checks
+on:
+  push:
+    branches: [main, codex/production-readiness]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node scripts/test-api-boundary.cjs
+      - run: npm run build
+        env:
+          EZ_TRUCKS_API_URL: https://webshop-api-m7ko.onrender.com
