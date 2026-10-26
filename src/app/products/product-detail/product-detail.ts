@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { PartsApi } from '../../services/parts-api';
 import { Part, getPartImages, getPrimaryPartImage } from '../../models/part-model';
 import { RouterLink } from '@angular/router';
@@ -12,7 +12,10 @@ import { LanguageService } from '../../services/language';
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
 })
-export class ProductDetail {
+export class ProductDetail implements OnDestroy {
+  @ViewChild('photoDialog') photoDialog?: ElementRef<HTMLDialogElement>;
+  private document = inject(DOCUMENT);
+  private previousOverflow: string | null = null;
   part?:Part;
   loading=true;
   selectedImage = '';
@@ -63,6 +66,47 @@ export class ProductDetail {
   selectImage(image: string): void {
     this.selectedImage = image;
   }
+
+  get imageIndex(): number {
+    return Math.max(0, this.getImages().indexOf(this.selectedImage));
+  }
+
+  moveImage(offset: number): void {
+    const images = this.getImages();
+    if (images.length) this.selectedImage = images[(this.imageIndex + offset + images.length) % images.length];
+  }
+
+  openPhoto(): void {
+    const dialog = this.photoDialog?.nativeElement;
+    if (!dialog || dialog.open) return;
+    this.previousOverflow = this.document.body.style.overflow;
+    this.document.body.style.overflow = 'hidden';
+    dialog.showModal();
+  }
+
+  closePhoto(): void { this.photoDialog?.nativeElement.close(); }
+
+  restoreScroll(): void {
+    if (this.previousOverflow !== null) {
+      this.document.body.style.overflow = this.previousOverflow;
+      this.previousOverflow = null;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  galleryKeydown(event: KeyboardEvent): void {
+    if (!this.photoDialog?.nativeElement.open) return;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.moveImage(event.key === 'ArrowLeft' ? -1 : 1);
+    }
+  }
+
+  closeBackdrop(event: MouseEvent): void {
+    if (event.target === this.photoDialog?.nativeElement) this.closePhoto();
+  }
+
+  ngOnDestroy(): void { this.restoreScroll(); }
 
   formatMileage(): string {
     return this.part?.mileage
