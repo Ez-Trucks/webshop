@@ -5,6 +5,7 @@ import { PartsApi } from '../../services/parts-api';
 import { Part, getPartImages, getPrimaryPartImage } from '../../models/part-model';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart';
+import { LanguageService } from '../../services/language';
 @Component({
   selector: 'app-product-detail',
   imports: [CommonModule,RouterLink],
@@ -19,7 +20,8 @@ export class ProductDetail {
   constructor(
     private route:ActivatedRoute,
     private partsApi:PartsApi,
-    private cartService:CartService
+    private cartService:CartService,
+    public languageService: LanguageService,
 
   ){
     const id =this.route.snapshot.paramMap.get('id');
@@ -44,8 +46,13 @@ export class ProductDetail {
   }
   addToCart(){
     if (this.part){
+      if (this.part.stock <= 0) {
+        alert('Deze vrachtwagen is momenteel niet beschikbaar.');
+        return;
+      }
+
       this.cartService.addToCart(this.part,1)
-      alert("Onderdeel toegevoegd aan het winkelmandje")
+      alert("Je interesse werd bewaard. Neem contact op voor bezichtiging of meer info.")
     }
   }
 
@@ -55,6 +62,12 @@ export class ProductDetail {
 
   selectImage(image: string): void {
     this.selectedImage = image;
+  }
+
+  formatMileage(): string {
+    return this.part?.mileage
+      ? `${this.part.mileage.toLocaleString('nl-BE')} km`
+      : this.languageService.t('onRequest');
   }
 
 }

@@ -7,6 +7,16 @@ export interface Part {
   condition: 'used' | 'new';
   price: number;
   image: string;
+  stock: number;
+  warehouseLocation?: string | null;
+  year?: number | null;
+  mileage?: number | null;
+  euroNorm?: string | null;
+  axleConfig?: string | null;
+  powerHp?: number | null;
+  fuel?: string | null;
+  transmission?: string | null;
+  description?: string | null;
 }
 
 export function getPartImages(part: Pick<Part, 'image'> | null | undefined): string[] {

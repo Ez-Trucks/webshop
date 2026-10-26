@@ -1,8 +1,8 @@
 <section class="page-shell detail-page">
   @if (loading) {
-    <div class="empty-state">Onderdeel laden...</div>
+    <div class="empty-state">{{ languageService.t('loadingVehicle') }}</div>
   } @else if (part) {
-    <a class="back-link" routerLink="/products">Terug naar alle onderdelen</a>
+    <a class="back-link" routerLink="/products">{{ languageService.t('backToStock') }}</a>
 
     <div class="detail-layout">
       <div class="detail-gallery">
@@ -16,12 +16,8 @@
         @if (getImages().length > 1) {
           <div class="detail-thumbs">
             @for (image of getImages(); track $index) {
-              <button
-                type="button"
-                [class.is-active]="image === selectedImage"
-                (click)="selectImage(image)"
-              >
-                <img [src]="image" alt="Productfoto {{ $index + 1 }}" />
+              <button type="button" [class.is-active]="image === selectedImage" (click)="selectImage(image)">
+                <img [src]="image" alt="Foto vrachtwagen {{ $index + 1 }}" />
               </button>
             }
           </div>
@@ -31,40 +27,84 @@
       <article class="detail-card">
         <p class="page-kicker">{{ part.model }} / {{ part.category }}</p>
         <h1 class="page-title">{{ part.name }}</h1>
-        <p class="page-lead">Professioneel truckonderdeel, klaar om toe te voegen aan je bestelling.</p>
+        <p class="page-lead">{{ languageService.t('detailLead') }}</p>
 
         <dl class="spec-list">
           <div>
-            <dt>Onderdeelnummer</dt>
+            <dt>{{ languageService.t('reference') }}</dt>
             <dd>{{ part.partNumber }}</dd>
           </div>
           <div>
-            <dt>Model</dt>
+            <dt>{{ languageService.t('brand') }}</dt>
             <dd>{{ part.model }}</dd>
           </div>
           <div>
-            <dt>Categorie</dt>
+            <dt>{{ languageService.t('type') }}</dt>
             <dd>{{ part.category }}</dd>
           </div>
           <div>
-            <dt>Staat</dt>
+            <dt>{{ languageService.t('condition') }}</dt>
             <dd>{{ part.condition }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('year') }}</dt>
+            <dd>{{ part.year || languageService.t('onRequest') }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('mileageLong') }}</dt>
+            <dd>{{ formatMileage() }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('euroNorm') }}</dt>
+            <dd>{{ part.euroNorm || languageService.t('onRequest') }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('axleConfig') }}</dt>
+            <dd>{{ part.axleConfig || languageService.t('onRequest') }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('power') }}</dt>
+            <dd>{{ part.powerHp ? part.powerHp + ' pk' : languageService.t('onRequest') }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('fuel') }}</dt>
+            <dd>{{ part.fuel || languageService.t('onRequest') }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('transmission') }}</dt>
+            <dd>{{ part.transmission || languageService.t('onRequest') }}</dd>
+          </div>
+          <div>
+            <dt>{{ languageService.t('status') }}</dt>
+            <dd>{{ part.stock > 0 ? languageService.t('available') : languageService.t('sold') }}</dd>
           </div>
         </dl>
 
+        @if (part.description) {
+          <section class="vehicle-description">
+            <h2>{{ languageService.t('description') }}</h2>
+            <p>{{ part.description }}</p>
+          </section>
+        }
+
         <div class="buy-panel">
           <div>
-            <span>Prijs</span>
+            <span>{{ languageService.t('price') }}</span>
             <strong>&euro;{{ part.price }}</strong>
           </div>
-          <button class="ez-button" type="button" (click)="addToCart()">Voeg toe aan winkelmand</button>
+          <a class="ez-button" href="mailto:info@ez-trucks.be?subject=Interesse%20in%20vrachtwagen">
+            {{ languageService.t('mailInfo') }}
+          </a>
+          <a class="ez-button-secondary" href="mailto:info@ez-trucks.be?subject=Bezichtiging%20vrachtwagen">
+            {{ languageService.t('requestViewing') }}
+          </a>
         </div>
       </article>
     </div>
   } @else {
     <div class="empty-state">
-      <h1>Dit onderdeel bestaat niet.</h1>
-      <a class="ez-button" routerLink="/products">Terug naar onderdelen</a>
+      <h1>{{ languageService.t('vehicleNotFound') }}</h1>
+      <a class="ez-button" routerLink="/products">{{ languageService.t('backToStock') }}</a>
     </div>
   }
 </section>

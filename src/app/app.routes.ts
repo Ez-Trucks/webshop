@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Products } from './pages/products/products';
-import { Cart } from './pages/cart/cart';
-import { Checkout } from './pages/checkout/checkout';
 import { AdminProducts } from './pages/admin-products/admin-products';
 import { AdminOrders } from './pages/admin-orders/admin-orders';
 import { adminAuthGuard } from './services/admin-auth.guard';
@@ -22,10 +20,12 @@ export const routes: Routes = [
       .then(m=>m.ProductDetail)
   },
   {
-    path: 'cart',component:Cart
+    path: 'cart',
+    redirectTo: 'products',
   },
   {
-    path: 'checkout', component:Checkout
+    path: 'checkout',
+    redirectTo: 'products',
   },
   {
     path: 'login',
@@ -39,6 +39,12 @@ export const routes: Routes = [
     path:'admin',
     loadComponent: () => import('./pages/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboard),
     canActivate: [adminAuthGuard],
+  },
+  {
+    path: 'admin/ad-assistant',
+    loadComponent: () => import('./pages/admin-ad-assistant/admin-ad-assistant').then(m => m.AdminAdAssistant),
+    canActivate: [adminAuthGuard],
+    canDeactivate: [(component: { dirty: boolean }) => !component.dirty || window.confirm('Je hebt niet-opgeslagen wijzigingen. Wil je de pagina verlaten?')],
   },
   {
     path:'admin/products', component:AdminProducts, canActivate: [adminAuthGuard]
