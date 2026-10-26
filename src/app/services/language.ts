@@ -131,7 +131,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     urgencyNotUrgent: "Niet dringend",
     requestRequired: "Controleer de verplichte velden.",
     requestReceived: "Je depannageaanvraag is ontvangen. We nemen contact met je op.",
-    requestFailed: "Versturen is niet gelukt. Mail ons rechtstreeks via info@ez-trucks.be.",
+    requestFailed: "Versturen is niet gelukt. Mail ons rechtstreeks via info@ez-trucks.com.",
   },
   fr: {
     enlargePhoto: 'Agrandir la photo',
@@ -261,7 +261,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     urgencyNotUrgent: "Pas urgent",
     requestRequired: "Vérifiez les champs obligatoires.",
     requestReceived: "Votre demande de dépannage a été reçue. Nous vous contacterons.",
-    requestFailed: "L’envoi a échoué. Contactez-nous par e-mail : info@ez-trucks.be.",
+    requestFailed: "L’envoi a échoué. Contactez-nous par e-mail : info@ez-trucks.com.",
   },
   en: {
     enlargePhoto: 'Enlarge photo',
@@ -391,7 +391,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     urgencyNotUrgent: "Not urgent",
     requestRequired: "Please check the required fields.",
     requestReceived: "Your assistance request has been received. We will contact you.",
-    requestFailed: "Sending failed. Please email us directly at info@ez-trucks.be.",
+    requestFailed: "Sending failed. Please email us directly at info@ez-trucks.com.",
   },
 };
 
