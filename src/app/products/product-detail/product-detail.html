@@ -7,22 +7,42 @@
     <div class="detail-layout">
       <div class="detail-gallery">
         <div class="detail-image">
-          <img
-            [src]="selectedImage"
-            alt="{{ part.name }}"
-          />
+          <button class="detail-image__open" type="button" (click)="openPhoto()" [attr.aria-label]="languageService.t('enlargePhoto')">
+            <img [src]="selectedImage" [alt]="part.name" />
+            <span class="enlarge-hint">{{ languageService.t('enlargePhoto') }} ⤢</span>
+          </button>
+          @if (getImages().length > 1) {
+            <button class="gallery-arrow gallery-arrow--previous" type="button" (click)="moveImage(-1)" [attr.aria-label]="languageService.t('previousPhoto')">‹</button>
+            <button class="gallery-arrow gallery-arrow--next" type="button" (click)="moveImage(1)" [attr.aria-label]="languageService.t('nextPhoto')">›</button>
+            <span class="gallery-count" aria-live="polite">{{ imageIndex + 1 }} / {{ getImages().length }}</span>
+          }
         </div>
 
         @if (getImages().length > 1) {
           <div class="detail-thumbs">
             @for (image of getImages(); track $index) {
-              <button type="button" [class.is-active]="image === selectedImage" (click)="selectImage(image)">
+              <button type="button" [class.is-active]="image === selectedImage" [attr.aria-pressed]="image === selectedImage" [attr.aria-label]="languageService.t('photo') + ' ' + ($index + 1)" (click)="selectImage(image)">
                 <img [src]="image" alt="Foto vrachtwagen {{ $index + 1 }}" />
               </button>
             }
           </div>
         }
       </div>
+
+      <dialog #photoDialog class="photo-dialog" [attr.aria-label]="part.name" (click)="closeBackdrop($event)" (close)="restoreScroll()">
+        <div class="photo-dialog__toolbar">
+          <span>{{ part.name }}</span>
+          <button type="button" class="photo-dialog__close" autofocus (click)="closePhoto()" [attr.aria-label]="languageService.t('closePhoto')">✕</button>
+        </div>
+        <div class="photo-dialog__stage">
+          <img [src]="selectedImage" [alt]="part.name + ' — ' + (imageIndex + 1)" />
+          @if (getImages().length > 1) {
+            <button class="gallery-arrow gallery-arrow--previous" type="button" (click)="moveImage(-1)" [attr.aria-label]="languageService.t('previousPhoto')">‹</button>
+            <button class="gallery-arrow gallery-arrow--next" type="button" (click)="moveImage(1)" [attr.aria-label]="languageService.t('nextPhoto')">›</button>
+          }
+        </div>
+        <p class="photo-dialog__count" aria-live="polite">{{ imageIndex + 1 }} / {{ getImages().length }}</p>
+      </dialog>
 
       <article class="detail-card">
         <p class="page-kicker">{{ part.model }} / {{ part.category }}</p>

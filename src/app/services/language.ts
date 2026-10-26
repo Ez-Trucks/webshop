@@ -4,6 +4,11 @@ export type LanguageCode = 'nl' | 'fr' | 'en';
 
 const translations: Record<LanguageCode, Record<string, string>> = {
   nl: {
+    enlargePhoto: 'Foto vergroten',
+    previousPhoto: 'Vorige foto',
+    nextPhoto: 'Volgende foto',
+    closePhoto: 'Sluiten',
+    photo: 'Foto',
     navHome: 'Home',
     navStock: 'Voorraad',
     navBuy: 'Wij kopen vrachtwagens',
@@ -129,6 +134,11 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     requestFailed: "Versturen is niet gelukt. Mail ons rechtstreeks via info@ez-trucks.be.",
   },
   fr: {
+    enlargePhoto: 'Agrandir la photo',
+    previousPhoto: 'Photo précédente',
+    nextPhoto: 'Photo suivante',
+    closePhoto: 'Fermer',
+    photo: 'Photo',
     navHome: 'Accueil',
     navStock: 'Stock',
     navBuy: 'Nous achetons des camions',
@@ -254,6 +264,11 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     requestFailed: "L’envoi a échoué. Contactez-nous par e-mail : info@ez-trucks.be.",
   },
   en: {
+    enlargePhoto: 'Enlarge photo',
+    previousPhoto: 'Previous photo',
+    nextPhoto: 'Next photo',
+    closePhoto: 'Close',
+    photo: 'Photo',
     navHome: 'Home',
     navStock: 'Stock',
     navBuy: 'We buy trucks',
