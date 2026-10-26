@@ -47,39 +47,14 @@
 </section>
 
 <section class="page-shell feature-grid">
-  <article>
-    <span>01</span>
-    <h3>Vrachtwagens in voorraad</h3>
-    <p>Elke camion krijgt een duidelijke fiche met technische gegevens, foto&apos;s en contactactie.</p>
-  </article>
-  <article>
-    <span>02</span>
-    <h3>Wij kopen ook aan</h3>
-    <p>Bezoekers kunnen snel zien dat EZ-Trucks vrachtwagens aankoopt en opvolgt.</p>
-  </article>
-  <article>
-    <span>03</span>
-    <h3>Depannage voor camions</h3>
-    <p>Een aparte serviceblok maakt duidelijk dat jullie ook bij panne inzetbaar zijn.</p>
-  </article>
+  <article><span>01</span><h3>{{ languageService.t('featureStockTitle') }}</h3><p>{{ languageService.t('featureStockText') }}</p></article>
+  <article><span>02</span><h3>{{ languageService.t('featureBuyTitle') }}</h3><p>{{ languageService.t('featureBuyText') }}</p></article>
+  <article><span>03</span><h3>{{ languageService.t('featureAssistanceTitle') }}</h3><p>{{ languageService.t('featureAssistanceText') }}</p></article>
 </section>
-
 <section class="page-shell feature-grid">
-  <article>
-    <span>Stap 01</span>
-    <h3>Stuur de basisgegevens</h3>
-    <p>Merk, type, bouwjaar, kilometerstand, foto&apos;s en de huidige staat zijn genoeg om te starten.</p>
-  </article>
-  <article>
-    <span>Stap 02</span>
-    <h3>Wij bekijken wat mogelijk is</h3>
-    <p>We denken praktisch mee over aankoop, verkoop, bezichtiging, ophaling of depannage.</p>
-  </article>
-  <article>
-    <span>Stap 03</span>
-    <h3>Duidelijke opvolging</h3>
-    <p>Geen ingewikkelde omwegen: je krijgt snel een concreet antwoord van iemand die de sector kent.</p>
-  </article>
+  <article><span>{{ languageService.t('stepOne') }}</span><h3>{{ languageService.t('stepOneTitle') }}</h3><p>{{ languageService.t('stepOneText') }}</p></article>
+  <article><span>{{ languageService.t('stepTwo') }}</span><h3>{{ languageService.t('stepTwoTitle') }}</h3><p>{{ languageService.t('stepTwoText') }}</p></article>
+  <article><span>{{ languageService.t('stepThree') }}</span><h3>{{ languageService.t('stepThreeTitle') }}</h3><p>{{ languageService.t('stepThreeText') }}</p></article>
 </section>
 
 <section class="service-band" id="aankoop">
@@ -167,9 +142,9 @@
       <label class="form-field">
         {{ languageService.t('urgency') }}*
         <select formControlName="urgency">
-          <option value="Vandaag">Vandaag</option>
-          <option value="Deze week">Deze week</option>
-          <option value="Niet dringend">Niet dringend</option>
+          <option value="Vandaag">{{ languageService.t('urgencyToday') }}</option>
+          <option value="Deze week">{{ languageService.t('urgencyWeek') }}</option>
+          <option value="Niet dringend">{{ languageService.t('urgencyNotUrgent') }}</option>
         </select>
       </label>
 

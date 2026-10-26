@@ -40,7 +40,7 @@ export class Home {
     this.depannageError = '';
 
     if (this.depannageForm.invalid) {
-      this.depannageError = 'Controleer de verplichte velden.';
+      this.depannageError = this.languageService.t('requestRequired');
       return;
     }
 
@@ -52,7 +52,7 @@ export class Home {
       .subscribe({
         next: () => {
           this.depannageSuccess =
-            'Je depannageaanvraag is verstuurd. We nemen zo snel mogelijk contact op.';
+            this.languageService.t('requestReceived');
           this.depannageSubmitted = false;
           this.depannageForm.reset({
             name: '',
@@ -68,7 +68,7 @@ export class Home {
         error: (err) => {
           console.error('Depannageaanvraag versturen mislukt', err);
           this.depannageError =
-            'Versturen is niet gelukt. Mail ons rechtstreeks via info@ez-trucks.be.';
+            this.languageService.t('requestFailed');
         },
       });
   }
